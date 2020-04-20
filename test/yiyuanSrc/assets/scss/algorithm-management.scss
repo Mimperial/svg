@@ -1,0 +1,21 @@
+.algorithmManagementLeft {
+    .el-input__inner {
+        height: 30px;
+        line-height: 30px;
+    }
+    .el-form-item {
+        margin-bottom: 0;
+    }
+    .el-form {
+        width: 25%;
+    }
+    .el-form-item:last-child {
+        margin-top: 10px;
+    }
+    .el-textarea {
+        height: 200px;
+        textarea {
+            height: 100%;
+        }
+    }
+}

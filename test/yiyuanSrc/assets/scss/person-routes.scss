@@ -1,0 +1,46 @@
+.personRouteLeft {
+    .el-select {
+        width: 100%;
+    }
+    .el-input__inner {
+        height: 30px;
+        line-height: 30px;
+    }
+    .el-form-item {
+        margin-bottom: 0;
+    }
+    .el-date-editor.el-input, .el-date-editor.el-input__inner {
+        width: auto;
+    }
+    .el-table td, .el-table th {
+        padding: 0;
+    }
+    .el-table .cell {
+        img {
+            width: 50px;
+            height: 50px;
+            position: relative;
+            top: 3px;
+        }
+    }
+    // 表格划过样式
+    .el-table--enable-row-hover .el-table__body tr:hover>td{
+        background: none !important;
+    }
+    .el-table, .el-table__expanded-cell,.el-table th, .el-table tr {
+        background: none;
+    }
+    .el-table td, .el-table th.is-leaf {
+        border-bottom:1px solid #666;
+    }
+    .el-table--border::after, .el-table--group::after, .el-table::before {
+        background: none;
+    }
+    .el-pagination--small {
+        width: 70%;
+        margin-top: 10px;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}

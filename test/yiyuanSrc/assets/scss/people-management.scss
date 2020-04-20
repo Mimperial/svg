@@ -1,0 +1,43 @@
+.meeting-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 1640px;
+    height: 60px;
+    line-height: 60px;
+    padding: 13px 25px;
+    background: #164E66;
+    color:#fff;
+    font-size: 14px;
+    .meeting-name {
+    width: 190px;
+    margin-right: 20px;
+  }
+    .el-input__inner{
+      height: 34px;
+      border: 1px solid #2BF2F4;
+      background: #164E66;
+    }
+    .el-range-input{
+      background: #164E66;
+    }
+    .meeting-status{
+      margin-left: 20px;
+    }
+    .search-meeting{
+      height: 34px;
+      background:rgba(2,66,82,1);
+      color: #fff;
+      border:1px solid rgba(43,242,244,1);
+      margin-left: 20px;
+      line-height: 9px;
+    }
+    .export{
+    width: 100px;
+    height: 34px;
+    background:rgba(0,247,255,1);
+    color: #091525;
+    border-radius:4px;
+  }
+  }
+  
