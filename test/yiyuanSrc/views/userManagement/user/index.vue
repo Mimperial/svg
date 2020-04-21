@@ -7,16 +7,18 @@
               </el-form-item>
               <el-form-item label="用户角色">
                 <el-select v-model="user.role">
-                  <el-option label="超级管理员" value="1"></el-option>
-                  <el-option label="管理员" value="2"></el-option>
+                  <el-option label="管理员1" value="管理员1"></el-option>
+                  <el-option label="管理员2" value="管理员2"></el-option>
+                  <el-option label="管理员3" value="管理员3"></el-option>
+                  <el-option label="管理员4" value="管理员4"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item>
-                <el-button>搜索</el-button>
+                <el-button @click="searchUser">搜索</el-button>
               </el-form-item>
             </el-form>
             <div class="option">
-              <el-button type="primary" @click="createUser">创建</el-button>
+              <el-button type="primary" @click="showUserDialog('创建')">创建</el-button>
               <el-button type="primary">导出</el-button>
             </div>
         </div>
@@ -51,19 +53,22 @@
               prop="option"
               label="操作">
               <template slot-scope="scope">
-                <span class="edit" @click="editUser(scope.row)"></span>
+                <span class="edit" @click="showUserDialog('编辑',scope.row)"></span>
                 <span class="remove" @click="deleteUser(scope.row)"></span>
               </template>
             </el-table-column>
           </el-table>
           <el-pagination
             background
-            layout="prev, pager, next, jumper"
-            :total="20"
+            layout="total, prev, pager, next, jumper"
+            :total="total"
+            :current-page="currentPage"
+            :page-size="pagesize"
+            @current-change="changeCurrent"
             >
           </el-pagination>
         </div>
-        <user-dialog :option="option" :visible.sync="visible" :form="itemUser"></user-dialog>
+        <user-dialog :option="option" :visible.sync="visible" :form="itemUser" @createUser="createUser"></user-dialog>
     </div>
 </template>
 
@@ -80,7 +85,10 @@ export default {
       },
       option: '',
       visible: false,
-      itemUser: {}
+      itemUser: {},
+      currentPage: 1,
+      pagesize: 12,
+      total: 0,
     }
   },
   components: {
@@ -91,19 +99,65 @@ export default {
   },
   methods: {
     getUserList () {
-      this.$http.get('/user/findAll').then(res => {
-        this.userList = res.data
+      this.$http.post('/user/findAll',{
+        username: this.user.name,
+        userRole: this.user.role === '全部' ? '' : this.user.role,
+        page: this.currentPage,
+        rows: this.pagesize
+      }).then(res => {
+        this.userList = res.data.data.row
+        this.total = res.data.data.total
       })
     },
-    createUser () {
-      this.visible = true
-      this.option = '创建'
-      this.itemUser = {}
+    searchUser () {
+      this.currentPage = 1
+      this.getUserList()
     },
-    editUser (item) {
+    showUserDialog (option, item) {
       this.visible = true
-      this.option = '编辑'
-      this.itemUser = item
+      this.option = option
+      if (!item) {
+        this.itemUser = {
+          username: '',
+          userRole: '',
+          pwd: ''
+        }
+      } else {
+        this.itemUser = {
+          username: item.username,
+          userRole: item.userRole,
+          pwd: '',
+          id: item.id
+        }
+      }
+    },
+    createUser (data,option) {
+      if (option === '创建') {
+        this.$http.post('/user/addUser', data).then((res) => {
+          console.log(res)
+          if (res.data.code === 200) {
+            this.visible = false
+            this.$message({
+              type: 'success',
+              message: '创建成功'
+            })
+            this.getUserList()
+          }
+        })
+      }
+      if (option === '编辑') {
+        data.id = this.itemUser.id
+        this.$http.post('/user/update', data).then((res) => {
+          if (res.data.code === 200) {
+            this.visible = false
+            this.$message({
+              type: 'success',
+              message: '编辑成功'
+            })
+            this.getUserList()
+          }
+        })
+      }
     },
     deleteUser (item) {
       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
@@ -111,9 +165,19 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
+        this.$http.post('/user/delete',{
+          ids: [item.id]
+        }).then(res => {
+          if (res.data.code === 200) {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+            this.currentPage = 1
+            this.getUserList()
+          } else {
+            this.$message.error('删除失败!')
+          }
         })
       }).catch(() => {
         this.$message({
@@ -121,6 +185,10 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+    changeCurrent(currentPage) {
+      this.currentPage = currentPage;
+      this.getUserList();
     }
   }
 }

@@ -1,13 +1,40 @@
 import Mock from 'mockjs'
-import { userData } from './user/user.js'
-import { roleData } from './user/role.js'
-import { floorData } from './resource/floor.js'
-import { relatedman } from './people/relatedman.js'
-import { meetingData } from './people/meeting.js'
+import userAPI from './user/user.js'
+import roleAPI from './user/role.js'
+import floorAPI from './resource/floor.js'
+import areaAPI from './resource/area.js'
+import equipmentAPI from './resource/equipment.js'
+import arithmeticAPI from './resource/arithmetic.js'
 
-export const userList = Mock.mock('http://localhost:8080/user/findAll', 'get', userData)
-export const roleList = Mock.mock('http://localhost:8080/user/role/findAll', 'get', roleData)
-export const floorList = Mock.mock('http://localhost:8080/resource/floor/findAll', 'get', floorData)
-export const relatedmanList = Mock.mock('http://localhost:8080/personnel/meetings/findPersonByMeetingId', 'get', relatedman)
-export const meetingList = Mock.mock('http://localhost:8080/personnel/meetings/findPersonByMeetingId', 'get', meetingData)
+import { relatedData } from './people/relatedman.js'
+import meetingAPI from './people/meeting.js'
+Mock.setup({
+    timeout: '300-600'
+})
+// 用户模块
+// 用户
+Mock.mock('http://localhost:8080/user/findAll', 'post', userAPI.getUserList) // 查询
+Mock.mock('http://localhost:8080/user/delete', 'post', userAPI.deleteItemUser) // 删除
+Mock.mock('http://localhost:8080/user/addUser', 'post', userAPI.addUser) // 创建
+Mock.mock('http://localhost:8080/user/update', 'post', userAPI.editUser) // 创建
 
+// 角色
+Mock.mock('http://localhost:8080/user/role/findAll', 'post', roleAPI.getRoleList)
+
+// 资源模块
+// 区域管理 - 楼层管理
+Mock.mock('http://localhost:8080/resource/floor/findAll', 'post', floorAPI.getFloorList)
+
+// 区域管理 - 区域管理
+Mock.mock('http://localhost:8080/resource/area/findAll', 'post', areaAPI.getAreaList)
+
+// 设备管理
+Mock.mock('http://localhost:8080/resource/device/findAll', 'post', equipmentAPI.getEquipmentList)
+
+// 算法管理
+Mock.mock('http://localhost:8080/resource/algorithm/findAll', 'post', arithmeticAPI.getArithmeticList)
+
+export const relatedmanList = Mock.mock('http://localhost:8080/personnel/meetings/findPersonByMeetingId', 'get', relatedData)
+
+// 人员模块--会议
+Mock.mock('http://localhost:8080/personnel/meetings/findPersonByMeetingId', 'post', meetingAPI.getMeetingList)

@@ -71,8 +71,11 @@
           </el-table>
           <el-pagination
             background
-            layout="prev, pager, next, jumper"
-            :total="20"
+            layout="total, prev, pager, next, jumper"
+            :total="total"
+            :current-page="currentPage"
+            :page-size="pagesize"
+            @current-change="changeCurrent"
             >
           </el-pagination>
         </div>
@@ -94,7 +97,10 @@ export default {
         equipType: ''
       },
       visible: false,
-      option: '创建'
+      option: '创建',
+      currentPage: 1,
+      pagesize: 12,
+      total: 0
     }
   },
   components: {
@@ -105,8 +111,12 @@ export default {
   },
   methods: {
     getArithmeticList () {
-      this.$http.get('/resource/algorithm/findAll').then(res => {
-        this.arithmeticList = res.data
+      this.$http.post('/resource/algorithm/findAll',{
+        page: this.currentPage,
+        rows: this.pagesize
+      }).then(res => {
+        this.arithmeticList = res.data.data.row
+        this.total = res.data.data.total
         console.log(this.arithmeticList)
       })
     },
@@ -134,6 +144,10 @@ export default {
     },
     looLine (item) {
 
+    },
+    changeCurrent(currentPage) {
+      this.currentPage = currentPage;
+      this.getArithmeticList();
     }
   }
 }

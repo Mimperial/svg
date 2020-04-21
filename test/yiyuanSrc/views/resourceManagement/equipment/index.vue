@@ -91,8 +91,11 @@
           </el-table>
           <el-pagination
             background
-            layout="prev, pager, next, jumper"
-            :total="20"
+            layout="total, prev, pager, next, jumper"
+            :total="total"
+            :current-page="currentPage"
+            :page-size="pagesize"
+            @current-change="changeCurrent"
             >
           </el-pagination>
         </div>
@@ -114,7 +117,10 @@ export default {
         equipType: ''
       },
       visible: false,
-      option: ''
+      option: '',
+      currentPage: 1,
+      pagesize: 12,
+      total: 0
     }
   },
   components: {
@@ -125,8 +131,12 @@ export default {
   },
   methods: {
     getEquipmentList () {
-      this.$http.get('/resource/device/findAll').then(res => {
-        this.equipmentList = res.data
+      this.$http.post('/resource/device/findAll',{
+        page: this.currentPage,
+        rows: this.pagesize
+      }).then(res => {
+        this.equipmentList = res.data.data.row
+        this.total = res.data.data.total
         console.log(this.equipmentList)
       })
     },
@@ -156,6 +166,10 @@ export default {
       this.equipmentItem = {}
       this.option = '创建'
       this.visible = true
+    },
+    changeCurrent(currentPage) {
+      this.currentPage = currentPage;
+      this.getEquipmentList();
     }
   }
 }

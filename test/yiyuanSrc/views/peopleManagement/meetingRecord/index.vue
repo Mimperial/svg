@@ -2,11 +2,11 @@
   <div class="meeting_record">
     <!-- 会议记录 -->
     <div class="top">
-      <el-form :inline="true" :model="area" class="demo-form-inline">
+      <el-form :inline="true" :model="meeting" class="demo-form-inline">
         <el-form-item label="会议名称">
           <el-input
             placeholder="请输入内容"
-            v-model="input"
+            v-model="meeting.meetingId"
             clearable
             class="meeting-name"
           >
@@ -15,7 +15,7 @@
         <el-form-item label="时间">
           <el-date-picker
             suffix-icon="el-icon-date"
-            v-model="time"
+            v-model="meeting.time"
             type="datetimerange"
             align="right"
             start-placeholder="开始日期"
@@ -67,13 +67,12 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        @size-change="handleSizeChange"
+        background
         @current-change="handleCurrentChange"
         :current-page="currentPage"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
+        :page-size="pagesize"
+        layout="total, prev, pager, next, jumper"
+        :total="total"
       >
       </el-pagination>
     </div>
@@ -126,13 +125,12 @@
           <el-table-column prop="firstUrl" label="抓拍图"></el-table-column>
         </el-table>
         <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
+          background
+          @current-change="detailCurrentChange"
+          :current-page="detailCurrentPage"
+          :page-size="10"
+          layout="total, prev, pager, next, jumper"
+          :total="detailTotal"
         >
         </el-pagination>
       </div>
@@ -146,9 +144,17 @@ export default {
   data() {
     return {
       input: "",
+      meeting: {
+        meetingId: '',
+        time:''
+      },
       meetingList: [],
       relatedManList: [],
       currentPage: 1,
+      detailCurrentPage: 1,
+      pagesize:2,
+      total:1,
+      detailTotal:1,
       options: [
         {
           value: "选项1",
@@ -157,7 +163,8 @@ export default {
       ],
       time: "",
       statusValue: "",
-      meetingPersonVisibale: false
+      meetingPersonVisibale: false,
+      
     };
   },
   created() {
@@ -165,9 +172,12 @@ export default {
   },
   methods: {
     getMeetingList() {
-      this.$http.get("/personnel/meetings/findPersonByMeetingId").then(res => {
-        this.meetingList = res.data;
-        console.log(this.meetingList);
+      this.$http.post("/personnel/meetings/findPersonByMeetingId",
+      { page:this.currentPage,
+        rows:this.pagesize
+      }).then(res => {
+        this.meetingList = res.data.data.rows;
+        this.total = res.data.data.total
       });
     },
     lookMeetingRelated(meetingId) {
@@ -177,11 +187,13 @@ export default {
         console.log(this.relatedManList);
       });
     },
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+    handleCurrentChange(currentPage) {
+      this.currentPage = currentPage;
+      this.getMeetingList();
     },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+    detailCurrentChange(currentPage) {
+      this.detailCurrentPage = currentPage;
+      // this.getMeetingList();
     }
   }
 };

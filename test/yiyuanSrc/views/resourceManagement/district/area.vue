@@ -84,8 +84,11 @@
           </el-table>
           <el-pagination
             background
-            layout="prev, pager, next, jumper"
-            :total="20"
+            layout="total, prev, pager, next, jumper"
+            :total="total"
+            :current-page="currentPage"
+            :page-size="pagesize"
+            @current-change="changeCurrent"
             >
           </el-pagination>
         </div>
@@ -107,7 +110,10 @@ export default {
         areaName: ''
       },
       option: '',
-      visible: false
+      visible: false,
+      currentPage: 1,
+      pagesize: 12,
+      total: 0
     }
   },
   components: {
@@ -118,8 +124,12 @@ export default {
   },
   methods: {
     getAreaList () {
-      this.$http.get('/resource/area/findAll').then(res => {
-        this.areaList = res.data
+      this.$http.post('/resource/area/findAll',{
+        page: this.currentPage,
+        rows: this.pagesize
+      }).then(res => {
+        this.areaList = res.data.data.row
+        this.total = res.data.data.total
         console.log(this.areaList)
       })
     },
@@ -149,6 +159,10 @@ export default {
       this.areaItem = {}
       this.option = '创建'
       this.visible = true
+    },
+    changeCurrent(currentPage) {
+      this.currentPage = currentPage;
+      this.getAreaList();
     }
   }
 }

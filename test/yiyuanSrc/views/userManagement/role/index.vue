@@ -35,8 +35,8 @@ export default {
   },
   methods: {
     getRoleList () {
-      this.$http.get('/user/role/findAll').then(res => {
-        this.roleList = res.data
+      this.$http.post('/user/role/findAll').then(res => {
+        this.roleList = res.data.data.row
         console.log(this.roleList)
       })
     }

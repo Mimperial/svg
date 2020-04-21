@@ -12,7 +12,7 @@ import User from '@/views/UserManagement/index' // 用户管理
 
 // 子路由
 // import Visual from './data_deck.js' // 数据驾驶舱
-// import IntelligentAnalysis from './intelligent_analysis.js' // 智能分析
+import IntelligentAnalysis from './intelligent_analysis.js' // 智能分析
 import PeopleMangement from './people_management.js' // 人员管理中心
 import ResourceManagement from './resource_management.js' // 资源管理
 import userManagement from './user_management.js' // 用户管理
@@ -60,9 +60,11 @@ export default new Router({
           path: 'intelligent_analysis',
           name: 'intelligentAnalysis',
           component: Intelligent,
+          redirect: '/home/intelligent_analysis/anomalousEvent',
           meta: {
             title: 'AI智能分析'
-          }
+          },
+          children: IntelligentAnalysis
         },
         {
           path: 'people_management',

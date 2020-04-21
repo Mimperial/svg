@@ -54,8 +54,11 @@
           </el-table>
           <el-pagination
             background
-            layout="prev, pager, next, jumper"
-            :total="20"
+            layout="total, prev, pager, next, jumper"
+            :total="total"
+            :current-page="currentPage"
+            :page-size="pagesize"
+            @current-change="changeCurrent"
             >
           </el-pagination>
         </div>
@@ -72,7 +75,10 @@ export default {
       floorList: [],
       option: '',
       visible: false,
-      floorItem: {}
+      floorItem: {},
+      currentPage: 1,
+      pagesize: 12,
+      total: 0
     }
   },
   components: {
@@ -83,8 +89,12 @@ export default {
   },
   methods: {
     getFloorList () {
-      this.$http.get('/resource/floor/findAll').then(res => {
-        this.floorList = res.data
+      this.$http.post('/resource/floor/findAll', {
+        page: this.currentPage,
+        rows: this.pagesize
+      }).then(res => {
+        this.floorList = res.data.data.row
+        this.total = res.data.data.total
       })
     },
     editFloor (item) {
@@ -113,6 +123,10 @@ export default {
       this.floorItem = {}
       this.option = '创建'
       this.visible = true
+    },
+    changeCurrent(currentPage) {
+      this.currentPage = currentPage;
+      this.getFloorList();
     }
   }
 }
