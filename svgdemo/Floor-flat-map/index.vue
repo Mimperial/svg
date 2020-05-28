@@ -1,0 +1,150 @@
+<template>
+  <div style="width:100%;height:100%;background: #fff;">
+    <div style="width: 100%; height: 100%;text-align: center;top:20%; position: absolute;">
+      <canvas
+        id="myCanvas"
+      ></canvas>
+    </div>
+    <ul id="p_arr_ul" style="z-index: 1;width: 100px;position: absolute;"></ul>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "flatMap",
+  mounted () {
+      this.createMap()
+  },
+  methods: {
+    createMap() {
+      this.$nextTick(() => {
+        function writeMessage(canvas, message) {
+          //var context = canvas.getContext("2d");
+          context.clearRect(0, 0, 100, 20);
+          context.font = "12pt Calibri";
+          context.fillStyle = "black";
+          context.fillText(message, 5, 12);
+        }
+        // function getMousePos(canvas, evt) {
+        // var rect = canvas.getBoundingClientRect();
+        // return {
+        // x: evt.clientX - rect.left,
+        // y: evt.clientY - rect.top,
+        // };
+        // }
+        var p_arr = [];
+
+        function initPArr() {
+          document.getElementById("p_arr_ul").innerHTML = "";
+          for (var i = 0; i < p_arr.length; i++) {
+            $("#p_arr_ul").append("<li>点：" + i + "</li>");
+          }
+        }
+
+        $("#p_arr_ul").on("click", "li", function(e) {
+          $(this)
+            .html()
+            .replace("点：", "");
+          var loc =
+            p_arr[
+              Number( 
+                $(this)
+                  .html()
+                  .replace("点：", "")
+              )
+            ];
+          context.beginPath();
+          context.arc(loc.x, loc.y, 10, 0, 2 * Math.PI);
+          context.stroke();
+        });
+
+        function getPointOnCanvas(canvas, evt) {
+          // var bbox = canvas.getBoundingClientRect();
+          // return {
+          // x: x - bbox.left * (canvas.width / bbox.width),
+          // y: y - bbox.top * (canvas.height / bbox.height),
+          // };
+          var rect = canvas.getBoundingClientRect();
+          var x = evt.layerX * (canvas.width / rect.width);
+          var y = evt.layerY * (canvas.height / rect.height);
+          return {
+            x: x,
+            y: y
+            //proportion_x: x / rect.width,
+            //proportion_y: y / rect.height,
+          };
+        }
+
+        function doMouseDown(event) {
+          //var tempContext = null; // global variable 2d context
+          // var x = event.pageX;
+          // var y = event.pageY;
+          // var canvas = event.target;
+
+          var rect = canvas.getBoundingClientRect();
+          var loc = getPointOnCanvas(canvas, event);
+          console.log("mouse down at point( x:" + loc.x + ", y:" + loc.y + ")");
+          console.log(
+            "mouse down at point比例( x:" +
+              loc.x / canvas.width +
+              ", y:" +
+              loc.y / canvas.height +
+              ")"
+          ); //将比例传给后端
+          // tempContext.beginPath();
+          //tempContext.moveTo(loc.x, loc.y);
+
+          context.beginPath();
+          context.arc(loc.x, loc.y, 10, 0, 2 * Math.PI);
+          context.stroke();
+          p_arr.push(loc);
+          initPArr();
+          // started = true;
+        }
+
+        var canvas = document.getElementById("myCanvas");
+        var context = canvas.getContext("2d");
+        // 获取新窗口的宽高,然后将比例乘以新的宽高，得到新的坐标，进行渲染。
+        //后端返回数据给前端时，再通过初始化的canvas宽高与比例相乘，得到相对坐标点
+        
+        canvas.addEventListener(
+          "mousemove",
+          function(evt) {
+            var mousePos = getPointOnCanvas(canvas, evt);
+            var message =
+              "" + mousePos.x.toFixed(1) + "," + mousePos.y.toFixed(1);
+            writeMessage(canvas, message);
+            // var rect = canvas.getBoundingClientRect();
+            // var x = (evt.layerX * (canvas.width / rect.width)).toFixed(0);
+            // var y = (evt.layerY * (canvas.height / rect.height)).toFixed(0);
+            // // console.log("x:" + x + ",y:" + y);
+            // context.clearRect(0, 0, 300, 50);
+            // context.textAlign = "left";
+            // context.font = "bolder 30px arial";
+            // context.fillText("X：" + x + " / Y：" + y, 10, 40);
+          },
+          false
+        );
+
+        canvas.addEventListener("mousedown", doMouseDown, false);
+        window.addEventListener(
+          "resize",
+          function() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+          },
+          false
+        );
+      });
+    }
+  }
+};
+</script>
+
+<style lang="scss">
+    canvas {
+        // background: url('../../assets/floor/f3.png') no-repeat; //png图不能自适应，svg才行
+        background: url('../../assets/flat-map-svg/f3.svg') no-repeat;
+        height:60%;
+        margin-top: 10px;
+    }
+</style>

@@ -1,0 +1,23 @@
+.device_dialog {
+    .el-select {
+        width: 100%;
+    }
+    .el-input__inner {
+        height: 30px;
+        line-height: 30px;
+    }
+    .el-form-item {
+        margin-bottom: 8px;
+    }
+    .el-radio {
+        margin-right: 10px;
+        height: 20px;
+        // line-height: 30px;
+    }
+    .el-radio__label {
+        padding-left: 5px;
+    }
+    .el-radio-group {
+        margin-top: 12px;
+    }
+}

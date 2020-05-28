@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+    </style>
+  </head>
+  <body data-rsssl="1">
+    <div >
+      <canvas
+        id="myCanvas"
+        style="background: url('./floor7.svg') no-repeat;margin-top: 20px;"
+      ></canvas>
+    </div>
+    <script>
+      function writeMessage(canvas, message) {
+        var context = canvas.getContext("2d");
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.font = "18pt Calibri";
+        context.fillStyle = "black";
+        context.fillText(message, 10, 25);
+      }
+      function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+          x: evt.clientX - rect.left,
+          y: evt.clientY - rect.top,
+        };
+      }
+      function getPointOnCanvas(canvas, x, y) {
+        var bbox = canvas.getBoundingClientRect();
+        return {
+          x: x - bbox.left * (canvas.width / bbox.width),
+          y: y - bbox.top * (canvas.height / bbox.height),
+        };
+      }
+      function doMouseDown(event) {
+        var tempContext = null; // global variable 2d context
+        var x = event.pageX;
+        var y = event.pageY;
+        var canvas = event.target;
+        var loc = getPointOnCanvas(canvas, x, y);
+        console.log("mouse down at point( x:" + loc.x + ", y:" + loc.y + ")");
+        console.log(
+          "mouse down at point比例( x:" +
+            loc.x / 800 +
+            ", y:" +
+            loc.y / 600 +
+            ")"
+        );
+        // tempContext.beginPath();
+        tempContext.moveTo(loc.x, loc.y);
+        started = true;
+      }
+      
+      var canvas = document.getElementById("myCanvas");
+      var context = canvas.getContext("2d");
+      // 获取新窗口的宽高,然后将比例乘以新的宽高，得到新的坐标，进行渲染。
+
+      canvas.addEventListener(
+        "mousemove",
+        function (evt, context) {
+          var mousePos = getMousePos(canvas, evt);
+          var message = "Mouse position: " + mousePos.x + "," + mousePos.y;
+          writeMessage(canvas, message);
+          var rect = canvas.getBoundingClientRect();
+          console.log(rect)
+          console.log(canvas.width)
+            var x = (evt.layerX * (canvas.width / rect.width)).toFixed(0);
+            var y = (evt.layerY * (canvas.height / rect.height)).toFixed(0);
+            // console.log("x:" + x + ",y:" + y);
+            context.clearRect(0, 0, 300, 50);
+            context.textAlign = "left";
+            context.font = "bolder 30px arial";
+            context.fillText("X：" + x + " / Y：" + y, 10, 40);
+        },
+        false
+      );
+      canvas.addEventListener("mousedown", doMouseDown, false);
+       
+    </script>
+  </body>
+</html>
