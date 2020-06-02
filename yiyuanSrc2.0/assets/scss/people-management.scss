@@ -1,0 +1,84 @@
+// .meeting-nav {
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-between;
+//     width: 1640px;
+//     height: 60px;
+//     line-height: 60px;
+//     padding: 13px 25px;
+//     background: #164E66;
+//     color:#fff;
+//     font-size: 14px;
+//     .meeting-name {
+//     width: 190px;
+//     margin-right: 20px;
+//   }
+//     .el-input__inner{
+//       height: 34px;
+//       border: 1px solid #2BF2F4;
+//       background: #164E66;
+//     }
+//     .el-range-input{
+//       background: #164E66;
+//     }
+//     .meeting-status{
+//       margin-left: 20px;
+//     }
+//     .search-meeting{
+//       height: 34px;
+//       background:rgba(2,66,82,1);
+//       color: #fff;
+//       border:1px solid rgba(43,242,244,1);
+//       margin-left: 20px;
+//       line-height: 9px;
+//     }
+//     .export{
+//     width: 100px;
+//     height: 34px;
+//     background:rgba(0,247,255,1);
+//     color: #091525;
+//     border-radius:4px;
+//   }
+//   }
+// 体征和使用率分析三个图表的共用样式
+.dailog-charts {
+    width: 1680px;
+    height: 800px;
+    overflow: scroll;
+    margin-top: 10px;
+ .line-tab {
+   .time-frame {
+     color: #000;
+     font-size: 14px;
+     span {
+       display: inline-block;
+       margin-right: 40px;
+     }
+   }
+ }
+
+ .chart-title {
+   display: flex;
+   justify-content: center;
+   flex-direction: column;
+   align-items: center;
+ }
+ .line {
+   width: 184px;
+   height: 3px;
+   background: radial-gradient(
+     circle,
+     rgba(211, 0, 0, 1),
+     rgba(211, 0, 0, 0)
+   );
+ }
+}
+// 折线图显示前的提示
+.before-chart-hint{
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  font-size: 36px;
+  color: #c3c3c3;
+}

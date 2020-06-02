@@ -1,0 +1,8 @@
+// 登录页
+.login {
+    .el-form {
+        .el-form-item__label::before {
+            display: none;
+        }
+    }
+}

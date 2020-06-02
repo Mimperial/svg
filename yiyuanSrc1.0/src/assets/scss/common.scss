@@ -1,0 +1,193 @@
+.aside {
+    .el-aside {
+        // background:rgba(22,78,102,.25);
+        background: #0A232D;
+        height: 100%;
+        color: #4D9EB3;
+    }
+    .el-menu {
+        font-weight: 600;
+        border: none;
+    }
+    .el-menu-item{
+        span,img {
+            margin-left: 10px;
+        }
+        ul li {
+            border-bottom: 1px solid #ccc;
+        }
+    }
+    .el-menu-item.is-active {
+        background-color:rgba(22,78,102,.25) !important;
+    }
+    .el-submenu__title{
+        padding-left: 30px !important;
+    }
+}
+.user,.floor,.area,.equipment,.arithmetic,.usage_rate,.gothrough_record,.staff_list,.visit_record,.meeting_record,.people-move-line{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    position: relative;
+    box-sizing: border-box;
+    .top {
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      height: 50px;
+    //   background: rgba(22,78,102,.25);
+        background: #fff;
+      padding: 10px 20px;
+      box-sizing: border-box;
+    }
+    .bottom {
+      flex: 1;
+    //   background: rgba(22,78,102,.25);
+      margin-top: 10px;
+      padding: 20px;
+      box-sizing: border-box;
+      img{
+          width: 68px;
+      }
+    }
+    .edit,.remove,.upload,.preview {
+    //   color: #4976a7;
+      cursor: pointer;
+    }
+    .line-tab {
+        display: flex;
+        justify-content: space-between;
+        margin: 5px 0;
+        .el-button{
+          height: 34px;
+          line-height: 13px;
+        }
+        .time-frame{
+          color: #fff;
+          .el-range-editor.el-input__inner{
+            height: 34px;
+            border: 1px solid #2BF2F4 !important;
+          }
+        }
+      }
+      .el-dialog__header,
+      .el-dialog__body,.el-range-editor.el-input__inner,.el-date-editor .el-range-input{
+    //    background: #164E66;
+    //    color:#fff
+      }
+      .el-date-editor .el-range-separator{
+        color: #fff;
+      }
+      .el-col-1{
+          width: 3%;
+      }
+}
+// .el-container>div>div.item-title:nth-child(2) {
+//     width: 280px
+// }
+.user,.floor,.area,.equipment,.arithmetic,.usage_rate,.gothrough_record,.staff_list,.visit_record,.meeting_record,.people-move-line{
+    .top {
+        .el-form-item {
+            height: 100%;
+            margin-bottom: 0;
+            .el-form-item__content {
+                line-height: 30px !important;
+            }
+            .el-form-item__label {
+                line-height: 30px;
+                // color: #fff;
+            }
+            .el-input__inner {
+                // border:1px solid rgba(43,242,244,1);
+                width: 180px;
+                height: 30px;
+                background: none;
+                border-radius: 0;
+                // color: #fff;
+            }
+            .el-date-editor.el-input__inner {
+                width: 220px;
+            }
+            .el-input__icon {
+                width: 25px;
+                height: auto !important;
+            }
+            .el-date-editor .el-range-separator {
+                line-height: 20px;
+            }
+        }  
+    }
+    
+}
+.user,.role,.floor,.area,.equipment,.arithmetic,.usage_rate,.gothrough_record,.staff_list,.visit_record,.meeting_record,.people-move-line {
+    .el-table {
+        background: none !important;
+        .el-checkbox__inner {
+            background: none !important;
+            // border: 1px solid #2BE6E9;
+            border: 1px solid #080808;
+        }
+    }
+    .el-table th, .el-table tr {
+        background: none;
+        // color: #fff;
+    }
+    .el-table--striped .el-table__body tr.el-table__row--striped td {
+        // background:rgba(22,78,102,.25);
+        background-color: #fff;
+    }
+    .el-table td, .el-table th.is-leaf {
+        border: none
+    }
+    .el-input__icon {
+        line-height: 32px;
+    }
+    .el-table--border::after, .el-table--group::after, .el-table::before{
+        background: none;
+    }
+    // .el-table--enable-row-hover .el-table__body tr:hover>td{
+    //     background-color: #212e3e !important;
+    // }
+}
+.user,.role,.floor,.area,.equipment,.arithmetic,.usage_rate,.gothrough_record,.staff_list,.visit_record,.meeting_record {
+  .el-pagination {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+  }
+  .top {
+    .el-form {
+        .el-button {
+            width: 60px;
+            height: 30px;
+            padding: 0;
+            line-height: 30px;
+            border-radius: 0;
+            border: none;
+            // background:rgba(2,66,82,1);
+            // border:1px solid rgba(43,242,244,1);
+            color: #fff;
+            background-color: #2F7B8F;
+            border-radius: 2px;
+        }
+        .el-range-input {
+            background: none !important;
+        }
+    }
+    .option {
+        .el-button {
+            width: 80px;
+            height: 30px;
+            line-height: 32px;
+            padding: 0;
+            // color:#091525;
+            // background: #00f7ff;
+            color: #fff;
+            background-color: #2F7B8F;
+            border: none;
+            border-radius: 2px;
+        }
+    }
+  }
+}
