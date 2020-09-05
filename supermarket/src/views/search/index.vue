@@ -28,8 +28,8 @@
           :label="item.location"
           is-link
           :to="{
-            name: 'search_detail',
-            params: { storeId: item.storeId, title: item.storeName, pageSign: 0 },
+            path: '/search/detail',
+            query: { storeId: item.storeId, title: item.storeName, pageSign: 0 },
           }"
         >
           <!-- 使用 title 插槽来自定义标题 -->

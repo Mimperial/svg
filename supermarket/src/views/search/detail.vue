@@ -27,8 +27,8 @@ export default {
             
         },
         getRouteParam(){
-            this.markeTitle = this.$route.params.title
-            this.storeId = this.$route.params.storeId
+            this.markeTitle = this.$route.query.title
+            this.storeId = this.$route.query.storeId
         },
         itemCapBtn(path, operateTitle){
             this.$router.push({path:path,query:{title:this.markeTitle,storeId: this.storeId, operateMarket:operateTitle}});

@@ -14,9 +14,9 @@
       <van-cell
         v-for="(item, index) in marketList"
         :key="index"
-        :title="item.storeInfo"
+        :title="item.storeName"
         :label="item.location"
-        is-link :to="{ name: 'search_detail', params: { id: item.storeId, title:item.storeInfo, pageSign:0 } }"
+        is-link :to="{ path: '/search/detail', query: { id: item.storeId, title:item.storeInfo, pageSign:0 } }"
       />
     </van-list>
     
@@ -36,12 +36,12 @@ export default {
       finished: true,
       type:1,
       marketList: [{
-        storeInfo: '宁阳县中超超市',
+        storeName: '宁阳县中超超市',
         location: '宁阳县新街路与建设路交叉口1',
         url: '/component/cell',
         storeId:"1"
       }, {
-        storeInfo: '宁阳县中超超市2',
+        storeName: '宁阳县中超超市2',
         location: '宁阳县新街路与建设路交叉口2',
         url: {
           path: '/component/radio',
@@ -61,7 +61,7 @@ export default {
       let _this = this;
       axios
         .post("/check/queryStore", {
-          userId: "001",
+          userId: window.localStorage.getItem('userId'),
           queryField: this.shopName,
           pageSize: this.pageSize,
           pageIndex: this.pageIndex,

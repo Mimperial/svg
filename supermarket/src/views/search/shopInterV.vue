@@ -46,7 +46,6 @@ export default {
         // 'OnePhoto': ()=>import('../../components/OnePhoto')
     },
     beforeCreate(){
-        
     },
     mounted(){
         this.backList()
@@ -54,17 +53,51 @@ export default {
         this.userId = userIdLocal
         this.storeId = this.$route.query.storeId
         if(this.userId && this.storeId){
-            this.lookMyCap()
+            this.getAlreadyImg()
         }
     },
     methods:{
         backList(){
             this.markeTitle = this.$route.query.title
         },
+        getAlreadyImg(){
+            // let _this = this;
+            axios
+                .post("/manage/findStoreFrontInfo", {
+                userId: this.userId,
+                storeId: this.storeId,
+                })
+                .then(function(response) {
+                console.log("已上传店铺");
+                console.log(response);
+                if(response.data.code == 0){
+                    let resFrontDataList = response.data.result.storefrontInfo;
+                    // resFrontDataList.forEach(element => {
+                    //     let objImg = {}
+                    //     objImg.url = element.pic
+                    //     this.uploader.push(objImg)
+                    // });
+                    
+                    this.uploader = resFrontDataList.map(
+                        (ele)=>{
+                            return {"url": ele["pic"]}
+                        }
+                    )
+                    console.log("已上传回显图片")
+                    console.log(this.uploader)
+                }else{
+                    console.log(response.data.msg)
+                    Notify({ type: 'warning', message: response.data.msg });
+                }
+                })
+                .catch(function(error) {
+                console.log(error);
+                });
+        },
         afterRead(file) {
           // 此时可以自行将文件上传至服务器
           console.log(file.file);
-        //   let _this = this;
+          let _this = this;
           let formData = new FormData();
           formData.append("userId", this.userId);
           formData.append("storeId", this.storeId);
@@ -75,7 +108,7 @@ export default {
               .then(function(response) {
                 if(response.data.code == 0){
                   Notify({ type: 'success', message: '上传成功' });
-                  this.$router.push({path:'/search/detail',query:{title:this.belongTo}});
+                  _this.$router.push({path:'/search/detail',query:{title:_this.markeTitle}});
                 }else{
                   console.log(response.data.msg)
                   Notify({ type: 'warning', message: response.data.msg });
@@ -84,31 +117,6 @@ export default {
               .catch(function(error) {
                 console.log(error);
               });
-        },
-        lookMyCap(){
-            let _this = this;
-            let formDataMy = new FormData();
-          formDataMy.append("userId", this.userId);
-          formDataMy.append("storeId", this.storeId);
-        //   formDataMy.append("existStoreFrontInfo", []);
-        //   formDataMy.append("modifyStoreFrontFile", '');
-            axios
-                .post("/check/modifyStorefrontInfo", formDataMy)
-                .then(function(response) {
-                console.log("我的采集店铺");
-                console.log(response);
-                if(response.data.code == 0){
-                    let resDataList = response.data.result.storeInfo;
-                _this.marketList = resDataList;
-                }else{
-                    console.log(response.data.msg)
-                    Notify({ type: 'warning', message: response.data.msg });
-                }
-                
-                })
-                .catch(function(error) {
-                console.log(error);
-                });
         },
         lookBigImg(){
             ImagePreview([
